@@ -1,0 +1,14 @@
+{
+  "name": "arena-bet",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm --prefix server install && npm --prefix web install",
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm --prefix server run dev\" \"npm --prefix web run dev\"",
+    "build": "npm --prefix web run build",
+    "test": "npm --prefix server test",
+    "typecheck": "npm --prefix server run typecheck && npm --prefix web run typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

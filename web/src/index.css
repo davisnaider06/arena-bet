@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: #0b0b0c;
+  --color-surface: #1a1a1c;
+  --color-surface-2: #26262a;
+  --color-line: #303035;
+  --color-muted: #9a9aa2;
+  --color-brand: #ff5a36;
+  --color-brand-2: #ff8a3d;
+  --color-brand-deep: #e8401c;
+  --color-win: #2fd27a;
+  --color-loss: #ff4d5e;
+
+  --animate-live: live 1.4s ease-in-out infinite;
+  @keyframes live {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.8); }
+  }
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+}
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: #0b0b0c;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* No desktop, o app fica num "celular" sobre o fundo laranja, como no conceito. */
+@media (min-width: 640px) {
+  body {
+    background:
+      radial-gradient(1200px 600px at 80% 0%, #ff8a3d 0%, transparent 60%),
+      linear-gradient(135deg, #ff6a2d 0%, #e8401c 55%, #b82e12 100%);
+    background-attachment: fixed;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+.skeleton {
+  background: linear-gradient(90deg, #1f1f22 0%, #2c2c31 50%, #1f1f22 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+.brand-gradient {
+  background: linear-gradient(120deg, #ff8a3d 0%, #ff5a36 45%, #e8401c 100%);
+}
+
+.hero-glow {
+  background:
+    radial-gradient(120% 70% at 20% 0%, rgba(255, 122, 40, 0.55) 0%, rgba(255, 90, 54, 0.15) 45%, transparent 75%);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
