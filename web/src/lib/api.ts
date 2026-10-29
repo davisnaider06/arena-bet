@@ -1,7 +1,11 @@
 import axios, { AxiosError } from "axios";
 import type { ApiErrorBody, Bet, Match, Team, Wallet } from "./types";
 
-export const http = axios.create({ baseURL: "/api", timeout: 8000 });
+import { DEMO } from "./socket";
+
+const API_URL = import.meta.env.VITE_API_URL as string | undefined;
+export const http = axios.create({ baseURL: `${API_URL ?? ""}/api`, timeout: 8000 });
+if (DEMO) http.defaults.adapter = (await import("./demo")).demoAdapter;
 
 /** Converte qualquer erro do Axios numa mensagem que dá pra mostrar ao usuário. */
 export function errorBody(err: unknown): ApiErrorBody {

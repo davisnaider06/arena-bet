@@ -20,6 +20,14 @@ Abra http://localhost:5173. No desktop o app aparece dentro de uma moldura de ce
 
 Testes da API: `npm test`. Checagem de tipos: `npm run typecheck`.
 
+## Demo online (modo estático)
+
+A versão publicada na Vercel roda com `VITE_DEMO=1`. Hospedagem estática não mantém um servidor Socket.IO, então o **mesmo motor** da API (`server/src/engine.ts`) roda dentro do navegador. O front continua usando Axios e a interface do socket; só o transporte muda (`web/src/lib/demo.ts`: adapter do Axios + socket em memória). Nesse modo o estado é por aba e volta ao início quando a página recarrega.
+
+```bash
+cd web && VITE_DEMO=1 npm run build
+```
+
 ## O que tem
 
 - **Início**: saudação com saldo animado, busca, seletor de dia, cards em destaque (ao vivo primeiro), próximos jogos e times populares.
@@ -46,6 +54,7 @@ Testes da API: `npm test`. Checagem de tipos: `npm run typecheck`.
 ```
 server/src/
   domain.ts        regras de aposta, validação e liquidação (sem I/O)
+  engine.ts        simulação ao vivo e casos de uso, sem I/O (usado pela API e pela demo)
   domain.test.ts   testes das regras
   seed.ts          partidas e times fictícios
   index.ts         REST + Socket.IO + simulação ao vivo

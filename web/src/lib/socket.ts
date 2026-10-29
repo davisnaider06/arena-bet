@@ -3,16 +3,25 @@ import { useSyncExternalStore } from "react";
 
 export type ConnectionState = { status: "connecting" | "connected" | "reconnecting" | "offline"; attempt: number };
 
-export const socket: Socket = io({
-  path: "/socket.io",
-  transports: ["websocket"],
-  reconnection: true,
-  reconnectionAttempts: Infinity,
-  reconnectionDelay: 800,
-  reconnectionDelayMax: 6000,
-});
+export const DEMO = import.meta.env.VITE_DEMO === "1";
+const API_URL = import.meta.env.VITE_API_URL as string | undefined;
 
-let state: ConnectionState = { status: "connecting", attempt: 0 };
+async function createSocket(): Promise<Socket> {
+  if (DEMO) return (await import("./demo")).demoSocket as unknown as Socket;
+  return io(API_URL ?? "", {
+    path: "/socket.io",
+    transports: ["websocket"],
+    reconnection: true,
+    reconnectionAttempts: Infinity,
+    reconnectionDelay: 800,
+    reconnectionDelayMax: 6000,
+  });
+}
+
+// Top-level await: o resto do app só roda com o transporte escolhido.
+export const socket: Socket = await createSocket();
+
+let state: ConnectionState = { status: DEMO ? "connected" : "connecting", attempt: 0 };
 const listeners = new Set<() => void>();
 const set = (next: ConnectionState) => {
   state = next;
